@@ -33,17 +33,6 @@ class HttpService {
         return { request, cancel: () => controller.abort() };
     }
 
-    /**
-     * Performs a post request and loads in the provided message histroy
-     * @param messages message history to 
-     * @returns response object from endpoint, and abort logic
-     */
-    getImage(info: string) {
-        const controller = new AbortController();
-        const request = apiClient.get(this.endpoint + "/" + info, { signal: controller.signal, responseType: 'blob' });
-        return { request, cancel: () => controller.abort() };
-    }
-
     post(data: any) {
         const controller = new AbortController();
         const request = apiClient.post(this.endpoint, { params: data, signal: controller.signal });
@@ -86,13 +75,6 @@ const createExpertResponseService = () => {
     return new HttpService("/expert");
 }
 
-const createImageService = () => {
-    return new HttpService("/image");
-}
-
-const createSampleImageService = () => {
-    return new HttpService("/sample-image");
-}
 
 const createService = (type: ServiceCategory) => {
     return new HttpService("/" + type);
@@ -111,4 +93,4 @@ const createLikeService = () => {
     return new HttpService("/like");
 }
 
-export { createResponseService, createParentalService, createExpertResponseService, createLikeService, createSampleImageService, createImageService, postPayload, createService };
+export { createResponseService, createParentalService, createExpertResponseService, createLikeService,  postPayload, createService };

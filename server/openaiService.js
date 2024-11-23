@@ -8,7 +8,7 @@ import fs from 'fs';
 
 // Creates an OpenAI connection using the provided api key
 const openai = new OpenAI({
-    apiKey: ""
+    apiKey: "sk-1234uvwxabcd5678uvwxabcd1234uvwxabcd5678"
 });
 
 /**
@@ -29,24 +29,5 @@ function base64_encode(file) {
     return new Buffer(bitmap).toString('base64');
 }
 
-const getImageResponse =  async (messages, path) => await openai.chat.completions.create({
-    model: "gpt-4o",
-    messages: [
-    {
-        role: "user", 
-        content: [
-            {
-                "type": "text",
-                "text": "Describe this image"
-              },
-            { 
-                "type": "image_url",
-                "image_url": {
-                    "url": "data:image/jpeg;base64," + base64_encode(path),
-            }
-        }] 
-    }, 
-     ...messages],
-});
 
-export { getGptResonse, getImageResponse };
+export { getGptResonse };

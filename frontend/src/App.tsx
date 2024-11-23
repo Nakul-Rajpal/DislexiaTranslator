@@ -1,42 +1,33 @@
-import "./App.css";
+"use client";
 
-import QueryBox from "./components/QueryBox";
-import QueryForm from "./components/QueryForm";
-import ChatRoom from "./components/ChatRoom";
-import useImage from "./hooks/useImage";
-import useText from "./hooks/useText";
-import { useEffect } from "react";
-import ImageCaptionDisplay from "./components/ImageCaptionDisplay";
+import React, { useState } from "react";
+import InputBox from "./components/InputBox";
+import PromptSelector from "./components/PromptSelector";
+import ResponseDisplay from "./components/ResponseDisplay";
+import { getLlamaResponse } from "./components/llamaai";
 
-function App() {
-  const { image, imgError, imgIsLoading } = useImage("");
-  const { text, textError, textIsLoading } = useText("", "chatroom-image");
+const App: React.FC = () => {
+  const [response, setResponse] = useState("");
+  const [selectedPrompt, setSelectedPrompt] = useState("");
 
-  useEffect(() => {
-    console.log(text);
-  }, [text]);
+  const handleTextSubmit = async (text: string) => {
+    if (!selectedPrompt) {
+      alert("Please select a prompt type.");
+      return;
+    }
+    const apiResponse = await getLlamaResponse(text, selectedPrompt);
+    setResponse(apiResponse);
+  };
 
   return (
-    <div>
-      {(imgIsLoading || textIsLoading) && <div className="spinner-border" />}
-      {!imgIsLoading && !textIsLoading && (
-        <ImageCaptionDisplay img={image} caption={text} />
-      )}
-      <br />
-      <QueryBox />
-      <br />
-      <QueryForm />
-      <br />
-      <ChatRoom />
-      <br />
+    <div style={{ padding: "20px", fontFamily: "'Arial', sans-serif" }}>
+      <h1>Dyslexia/DysCalculia Assignment Helper</h1>
+      <p>First. Select the cognitive disability you would like a break down for; then paste the problem and click submit.</p>
+      <InputBox onSubmit={handleTextSubmit} />
+      <PromptSelector onSelect={setSelectedPrompt} />
+      {response && <ResponseDisplay response={response} />}
     </div>
   );
-}
+};
 
 export default App;
-
-/**
- * <QueryForm />
-      <br />
-      <ChatRoom />
- */
