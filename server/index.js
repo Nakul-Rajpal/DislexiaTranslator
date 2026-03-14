@@ -2,10 +2,6 @@ import express from "express";
 import cors from "cors";
 import axios from "axios";
 
-// Llama API Configuration
-const LLAMA_API_URL = "https://api.llama-api.com"; // Replace with actual endpoint.
-const API_KEY = "LA-1d0ac8b09d70445a8c3a9eff052370a324cad1fa2fe2464689c8e6b0137ed68f"; // Replace with your LlamaAI API key.
-
 const app = express(); // Server is instantiated
 
 // CORS Configuration
@@ -18,30 +14,62 @@ const corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
+// OpenAI API Configuration
+const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+const API_KEY = "LA-6d12545184274f23a38f26fa3cd6361242a78131c42e40aeafaa0984794e20f3"; 
+
 // Default route to check server status
 app.get("/", (req, res) => {
   res.send("The server is up!");
 });
 
-// Route to call Llama API
+// Route to handle OpenAI requests
 app.post("/response", async (req, res) => {
-  const { text } = req.body;
+  const { text, promptType } = req.body;
 
-  if (!text) {
+  // Log the request body for debugging
+  console.log("Request Body:", req.body);
+
+  // Validate input
+  if (!text || !promptType) {
+    console.error("Missing text or promptType in the request");
     return res.status(400).send("Both text and promptType are required.");
   }
 
   try {
-    const response = await axios.post(
-      LLAMA_API_URL,
-      { text },
-      { headers: { Authorization: `Bearer ${API_KEY}` } }
-    );
+    // OpenAI API payload
+    const payload = {
+      model: "gpt-3.5-turbo", // Change model as needed
+      messages: [
+        {
+          role: "system",
+          content: `You are an expert in ${promptType}. Provide helpful and concise answers.`,
+        },
+        {
+          role: "user",
+          content: text,
+        },
+      ],
+    };
 
-    // Send the processed response back to the client
-    res.send(response.data.response);
+    // Make the API call to OpenAI
+    const response = await axios.post(OPENAI_API_URL, payload, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${API_KEY}`,
+      },
+    });
+
+    console.log("OpenAI API Response:", response.data); // Debug OpenAI API response
+    res.send({ response: response.data.choices[0].message.content }); // Send back the response
   } catch (error) {
-    console.error("Error fetching LlamaAI response:", error.message);
+    console.error("Error in OpenAI API:", error.response?.data || error.message);
+
+    // Return detailed error response for debugging
+    if (error.response) {
+      return res.status(error.response.status).send(error.response.data);
+    }
+
     res.status(500).send("An error occurred while processing your request.");
   }
 });

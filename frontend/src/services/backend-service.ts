@@ -3,7 +3,6 @@
  * HttpService provides easy extension for additional routes.
  * @author Christopher Curtis
  */
-import { Message, ServiceCategory } from "../types";
 import apiClient from "./api-client";
 
 /**
@@ -59,38 +58,6 @@ const createResponseService = () => {
     return new HttpService("/response");
 }
 
-/**
- * Creates a connection for parentally controlled interactions.
- * @returns new HttpService object to the parental route.
- */
-const createParentalService = () => {
-    return new HttpService("/parental");
-}
-
-/**
- * Creates a connection for gpt interactions with specific domain knowledge.
- * @returns new HttpService object to the expert route.
- */
-const createExpertResponseService = () => {
-    return new HttpService("/expert");
-}
 
 
-const createService = (type: ServiceCategory) => {
-    return new HttpService("/" + type);
-}
-
-const postPayload = (type: ServiceCategory, payload: Message[]) => {
-    const {request, cancel} = createService(type).postMessages(payload);
-    return { request, cancel };
-}
-
-/**
- * Creates a connection for sending user "likes".
- * @returns new HttpService object to the "like" route.
- */
-const createLikeService = () => {
-    return new HttpService("/like");
-}
-
-export { createResponseService, createParentalService, createExpertResponseService, createLikeService,  postPayload, createService };
+export { createResponseService};
