@@ -1,16 +1,47 @@
-// App.tsx
+/**
+ * @file App.tsx
+ * @project DislexiaTranslator
+ * @author Nakul Rajpal
+ * @created 2024-10-14
+ * @description Root application component. Manages learning-style selection, user input,
+ *              and communication with the backend API to display AI-simplified responses.
+ * @source HUMAN_AUTHORED
+ */
+
 import React, { useState } from 'react';
 import InputBox from './components/InputBox';
 import PromptSelector from './components/PromptSelector';
 import ResponseDisplay from './components/ResponseDisplay';
 import './App.css';
 
+/**
+ * Root component that orchestrates the full user flow:
+ * 1. User selects a learning style via {@link PromptSelector}.
+ * 2. User types a question into {@link InputBox}.
+ * 3. The question is POSTed to the backend, and the AI response is shown in {@link ResponseDisplay}.
+ *
+ * @returns {React.ReactElement} The rendered application shell.
+ * @example
+ * // Rendered automatically by main.tsx:
+ * // <App />
+ * @source HUMAN_AUTHORED
+ */
 const App: React.FC = () => {
   const [response, setResponse] = useState<string>('');
   const [selectedPrompt, setSelectedPrompt] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
+  /**
+   * Sends the user's question to the backend API along with the selected
+   * learning-style prompt type, then stores the AI response in state.
+   *
+   * @param {string} text - The user's question or problem text.
+   * @returns {Promise<void>}
+   * @example
+   * handleTextSubmit("What is photosynthesis?");
+   * @source HUMAN_AUTHORED
+   */
   const handleTextSubmit = async (text: string) => {
     if (!selectedPrompt) {
       alert('Please select a prompt type.');

@@ -1,3 +1,13 @@
+/**
+ * @file index.css
+ * @project DislexiaTranslator
+ * @author Nakul Rajpal
+ * @created 2024-10-14
+ * @description Global styles — Nunito font import, CSS reset, and the green
+ *              gradient background used across the entire application.
+ * @source HUMAN_AUTHORED
+ */
+
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
 
 * {

@@ -1,17 +1,55 @@
-// InputBox.tsx
+/**
+ * @file InputBox.tsx
+ * @project DislexiaTranslator
+ * @author Nakul Rajpal
+ * @created 2024-10-14
+ * @description Textarea form component that captures the user's question and
+ *              submits it to the parent handler for API processing.
+ * @source HUMAN_AUTHORED
+ */
+
 import React, { useState } from 'react';
 
+/** Props accepted by the {@link InputBox} component. */
 interface InputBoxProps {
+  /** Callback invoked with the trimmed input text when the form is submitted. */
   onSubmit: (text: string) => void;
 }
 
+/**
+ * Renders a styled textarea with a submit button. On submission the input is
+ * forwarded to the parent via {@link InputBoxProps.onSubmit} and the field is cleared.
+ *
+ * @param {InputBoxProps} props - Component props.
+ * @returns {React.ReactElement} The input form element.
+ * @example
+ * <InputBox onSubmit={(text) => console.log(text)} />
+ * @source HUMAN_AUTHORED
+ */
 const InputBox: React.FC<InputBoxProps> = ({ onSubmit }) => {
   const [inputText, setInputText] = useState('');
 
+  /**
+   * Updates local state as the user types.
+   *
+   * @param {React.ChangeEvent<HTMLTextAreaElement>} e - Textarea change event.
+   * @returns {void}
+   * @source HUMAN_AUTHORED
+   */
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setInputText(e.target.value);
   };
 
+  /**
+   * Prevents default form submission, forwards the trimmed text to the parent
+   * callback, and resets the textarea.
+   *
+   * @param {React.FormEvent} e - Form submit event.
+   * @returns {void}
+   * @example
+   * // Triggered internally when the user clicks "Submit"
+   * @source HUMAN_AUTHORED
+   */
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (inputText.trim()) {

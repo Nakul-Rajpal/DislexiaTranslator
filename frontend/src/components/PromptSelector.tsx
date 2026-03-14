@@ -1,14 +1,36 @@
-"use client";
+/**
+ * @file PromptSelector.tsx
+ * @project DislexiaTranslator
+ * @author Nakul Rajpal
+ * @created 2024-10-14
+ * @description Toggle-button group that lets the user pick a learning style
+ *              (Dyslexia or Dyscalculia) before submitting a question.
+ * @source HUMAN_AUTHORED
+ */
 
 import React from "react";
 
+/** Props accepted by the {@link PromptSelector} component. */
 interface PromptSelectorProps {
+  /** The currently selected learning style, or an empty string if none. */
   selected: string;
+  /** Callback invoked when the user clicks a learning-style button. */
   onSelect: (promptType: string) => void;
 }
 
+/** Available learning-style options displayed as buttons. */
 const options = ["Dyslexia", "Dyscalculia"];
 
+/**
+ * Renders a row of toggle buttons — one per learning style. The active button
+ * receives a filled green style; inactive buttons use a dashed outline.
+ *
+ * @param {PromptSelectorProps} props - Component props.
+ * @returns {React.ReactElement} A flex row of styled toggle buttons.
+ * @example
+ * <PromptSelector selected="Dyslexia" onSelect={(type) => console.log(type)} />
+ * @source HUMAN_AUTHORED
+ */
 const PromptSelector: React.FC<PromptSelectorProps> = ({ selected, onSelect }) => {
   return (
     <div style={{

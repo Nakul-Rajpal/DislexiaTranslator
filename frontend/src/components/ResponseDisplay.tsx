@@ -1,11 +1,32 @@
-"use client";
+/**
+ * @file ResponseDisplay.tsx
+ * @project DislexiaTranslator
+ * @author Nakul Rajpal
+ * @created 2024-10-14
+ * @description Read-only card that renders the AI-generated response returned
+ *              by the backend, styled to match the cozy "Piece by Piece" aesthetic.
+ * @source HUMAN_AUTHORED
+ */
 
 import React from "react";
 
+/** Props accepted by the {@link ResponseDisplay} component. */
 interface ResponseDisplayProps {
+  /** The AI-generated response text to display. */
   response: string;
 }
 
+/**
+ * Displays the AI response inside a two-part card: a dark header labeled
+ * "Response" and a cream-coloured body containing the text. Whitespace in
+ * the response is preserved via `white-space: pre-wrap`.
+ *
+ * @param {ResponseDisplayProps} props - Component props.
+ * @returns {React.ReactElement} The response card element.
+ * @example
+ * <ResponseDisplay response="2 + 2 equals 4." />
+ * @source HUMAN_AUTHORED
+ */
 const ResponseDisplay: React.FC<ResponseDisplayProps> = ({ response }) => {
   return (
     <div style={{
